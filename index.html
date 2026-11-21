@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Ortho Registry</title>
+<meta name="theme-color" content="#0f766e">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Ortho Registry">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<link rel="manifest" href="manifest.json">
+<link rel="icon" href="icon-192.png">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<style>
+  html, body { margin: 0; height: 100%; background: #0f766e; overflow: hidden; }
+  body { padding-top: env(safe-area-inset-top); box-sizing: border-box; font-family: system-ui, sans-serif; }
+  iframe { border: 0; width: 100%; height: 100%; display: block; background: #f3f5f7; }
+  #splash { position: fixed; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center;
+            gap: 14px; background: #0f766e; color: #fff; transition: opacity .3s; }
+  #splash img { width: 96px; height: 96px; border-radius: 22px; }
+  #splash .hint { font-size: 13px; opacity: .85; text-align: center; padding: 0 24px; display: none; }
+  #splash a { color: #fff; }
+</style>
+</head>
+<body>
+<div id="splash">
+  <img src="icon-192.png" alt="">
+  <div>กำลังเปิด Ortho Registry…</div>
+  <div class="hint" id="hint">ถ้าเปิดไม่ขึ้น ลอง <a id="direct" target="_blank" rel="noopener">เปิดในเบราว์เซอร์</a></div>
+</div>
+<iframe id="app" allow="camera; clipboard-read; clipboard-write" title="Ortho Registry"></iframe>
+
+<script>
+  /* ===== ใส่ลิงก์ Web app ของ Apps Script (ลงท้ายด้วย /exec) ตรงนี้ ===== */
+  const APP_URL = 'https://script.google.com/macros/s/XXXXXXXX/exec';
+
+  const f = document.getElementById('app');
+  const splash = document.getElementById('splash');
+  document.getElementById('direct').href = APP_URL;
+  f.onload = () => { splash.style.opacity = 0; setTimeout(() => splash.remove(), 300); };
+  setTimeout(() => { const h = document.getElementById('hint'); if (h) h.style.display = 'block'; }, 12000);
+  f.src = APP_URL;
+
+  if ('serviceWorker' in navigator) navigator.serviceWorker.register('sw.js');
+</script>
+</body>
+</html>
